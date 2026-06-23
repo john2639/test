@@ -9,7 +9,7 @@ Write-Host "=========================================="
 $InstallDir = "$env:USERPROFILE\.memoryverse-forge"
 $BinDir = "$InstallDir\bin"
 $ZipPath = "$env:TEMP\forge_v2.zip"
-$DownloadUrl = "https://github.com/john2639/test/releases/latest/download/forge_v2-windows.zip"
+$DownloadUrl = "https://github.com/john2639/memoryverse/releases/latest/download/forge_v2-windows.zip"
 
 # Create directories
 New-Item -ItemType Directory -Force -Path $BinDir | Out-Null
@@ -40,7 +40,7 @@ if (Test-Path $ExePath) {
 
 # Add to User PATH
 $UserPath = [Environment]::GetEnvironmentVariable("PATH", "User")
-if ($UserPath -notmatch "$BinDir") {
+if (-not $UserPath.Contains($BinDir)) {
     $NewPath = "$UserPath;$BinDir"
     [Environment]::SetEnvironmentVariable("PATH", $NewPath, "User")
     # Also update current session path so it works immediately in this window
