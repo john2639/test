@@ -40,7 +40,7 @@ if (Test-Path $ExePath) {
 
 # Add to User PATH
 $UserPath = [Environment]::GetEnvironmentVariable("PATH", "User")
-if (-not $UserPath.Contains($BinDir)) {
+if ($null -eq $UserPath -or $UserPath -notlike "*$BinDir*") {
     $NewPath = "$UserPath;$BinDir"
     [Environment]::SetEnvironmentVariable("PATH", $NewPath, "User")
     # Also update current session path so it works immediately in this window
