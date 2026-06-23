@@ -18,10 +18,10 @@ ARCH="$(uname -m)"
 
 if [ "$OS" = "Darwin" ]; then
     echo "🍎 Detected macOS ($ARCH)"
-    DOWNLOAD_URL="https://github.com/john2639/test/releases/latest/download/forge_v2-macos.tar.gz"
+    DOWNLOAD_URL="https://github.com/john2639/memoryverse/releases/latest/download/forge_v2-macos.tar.gz"
 elif [ "$OS" = "Linux" ]; then
     echo "🐧 Detected Linux ($ARCH)"
-    DOWNLOAD_URL="https://github.com/john2639/test/releases/latest/download/forge_v2-linux.tar.gz"
+    DOWNLOAD_URL="https://github.com/john2639/memoryverse/releases/latest/download/forge_v2-linux.tar.gz"
 else
     echo "❌ Unsupported OS: $OS"
     echo "Please download the Windows .zip installer directly."
@@ -44,28 +44,32 @@ echo "📦 Extracting binary to $BIN_DIR..."
 tar -xzf /tmp/forge_v2.tar.gz -C "$BIN_DIR"
 rm /tmp/forge_v2.tar.gz
 
-# Ensure it's executable
-chmod +x "$BIN_DIR/forge_v2"
+# Rename forge_v2 to forge for the CLI
+mv "$BIN_DIR/forge_v2" "$BIN_DIR/forge"
 
-# Create a desktop shortcut for Mac
-if [ "$OS" = "Darwin" ]; then
-    SHORTCUT_PATH="$HOME/Desktop/Forge_V2_Start.command"
-    echo '#!/bin/bash' > "$SHORTCUT_PATH"
-    echo "echo '🚀 Starting Forge V2...'" >> "$SHORTCUT_PATH"
-    echo "nohup \"$BIN_DIR/forge_v2\" > /dev/null 2>&1 &" >> "$SHORTCUT_PATH"
-    echo "echo '✅ Dashboard should open automatically. You can close this terminal window.'" >> "$SHORTCUT_PATH"
-    chmod +x "$SHORTCUT_PATH"
-    echo "✨ Desktop shortcut created: Forge_V2_Start.command"
+# Ensure it's executable
+chmod +x "$BIN_DIR/forge"
+
+# Add to shell profile
+PROFILE_STR="export PATH=\"\$HOME/.memoryverse-forge/bin:\$PATH\""
+
+if [ -n "$ZSH_VERSION" ] || [ -f "$HOME/.zshrc" ]; then
+    grep -qxF "$PROFILE_STR" "$HOME/.zshrc" 2>/dev/null || echo "$PROFILE_STR" >> "$HOME/.zshrc"
+    echo "✨ Added 'forge' command to ~/.zshrc"
+fi
+
+if [ -n "$BASH_VERSION" ] || [ -f "$HOME/.bash_profile" ]; then
+    grep -qxF "$PROFILE_STR" "$HOME/.bash_profile" 2>/dev/null || echo "$PROFILE_STR" >> "$HOME/.bash_profile"
+    echo "✨ Added 'forge' command to ~/.bash_profile"
 fi
 
 echo "=========================================="
 echo "✅ Installation complete!"
-echo "🚀 Starting Forge V2..."
-
-# Run the app in background
-nohup "$BIN_DIR/forge_v2" > /dev/null 2>&1 &
-
-echo "🌐 Forge V2 is running in the background."
-echo "Your browser should open the dashboard automatically."
-echo "If not, please visit: http://127.0.0.1:8000/dashboard"
+echo "⚠️  Please restart your terminal or run 'source ~/.zshrc' to use the 'forge' command."
+echo "=========================================="
+echo "🚀 To start the server, run:"
+echo "   forge start"
+echo ""
+echo "⚙️  To install as a 24/7 background service, run:"
+echo "   forge install-daemon"
 echo "=========================================="
