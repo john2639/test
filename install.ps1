@@ -9,7 +9,7 @@ Write-Host "=========================================="
 $InstallDir = "$env:USERPROFILE\.memoryverse-forge"
 $BinDir = "$InstallDir\bin"
 $ZipPath = "$env:TEMP\forge_v2.zip"
-$DownloadUrl = "https://github.com/john2639/memoryverse/releases/latest/download/forge_v2-windows.zip"
+$DownloadUrl = "https://github.com/john2639/test/releases/latest/download/forge_v2-Windows.zip"
 
 # Create directories
 New-Item -ItemType Directory -Force -Path $BinDir | Out-Null
@@ -23,7 +23,8 @@ try {
     Write-Host "✅ Download successful!"
 } catch {
     Write-Host "❌ Download failed! Please check your internet connection or if the GitHub Release is published."
-    exit 1
+    Write-Host "Error details: $_"
+    Return
 }
 
 Write-Host "📦 Extracting binary to $BinDir..."
