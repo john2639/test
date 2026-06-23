@@ -18,10 +18,10 @@ ARCH="$(uname -m)"
 
 if [ "$OS" = "Darwin" ]; then
     echo "🍎 Detected macOS ($ARCH)"
-    DOWNLOAD_URL="https://github.com/john2639/memoryverse/releases/latest/download/forge_v2-macos.tar.gz"
+    DOWNLOAD_URL="https://github.com/john2639/test/releases/latest/download/forge_v2-macos.tar.gz"
 elif [ "$OS" = "Linux" ]; then
     echo "🐧 Detected Linux ($ARCH)"
-    DOWNLOAD_URL="https://github.com/john2639/memoryverse/releases/latest/download/forge_v2-linux.tar.gz"
+    DOWNLOAD_URL="https://github.com/john2639/test/releases/latest/download/forge_v2-linux.tar.gz"
 else
     echo "❌ Unsupported OS: $OS"
     echo "Please download the Windows .zip installer directly."
